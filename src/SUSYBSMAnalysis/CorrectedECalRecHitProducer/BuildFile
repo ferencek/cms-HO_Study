@@ -1,0 +1,12 @@
+<use name=FWCore/Framework>
+<use name=FWCore/PluginManager>
+<use name=FWCore/ParameterSet>
+<use name=DataFormats/EcalRecHit>
+<flags EDM_PLUGIN=1>
+<export>
+   <lib name=SUSYBSMAnalysisCorrectedECalRecHitProducer>
+   <use name=FWCore/Framework>
+   <use name=FWCore/PluginManager>
+   <use name=FWCore/ParameterSet>
+   <use name=DataFormats/EcalRecHit>
+</export>
