@@ -17,10 +17,10 @@ QuickBuild=
 
 [item:HO_study.tex]
 archive=true
-column=0
+column=121
 encoding=UTF-8
 highlight=LaTeX
-line=36
+line=171
 open=true
 order=0
 
