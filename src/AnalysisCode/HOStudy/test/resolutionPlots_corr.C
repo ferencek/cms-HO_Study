@@ -196,7 +196,7 @@ void resolutionPlot(const string& fFile, const string& fTitle, const string& fNa
    TCanvas *c2 = new TCanvas("c2","",800,800);
    c2->cd();
 
-   string title_P = fTitle + ";E^{gen}_{T} [GeV];% of events 3#sigma below the mean";
+   string title_P = fTitle + ";E^{gen}_{T} [GeV];% of events more than 3#sigma below the mean";
    
    TH2F *h_bg_P = new TH2F("P3sigma",title_P.c_str(), 7200, 0., 7200., 85, 0.,8.5);
    h_bg_P->SetStats(kFALSE);
@@ -352,40 +352,40 @@ void makePlots() {
    //********************************************
    // root files
    //********************************************
-   string hostudy_eta01 = "hoStudy_corr_eta0.1.root";
-   string hostudy_eta05 = "hoStudy_corr_eta0.5.root";
-   string hostudy_eta10 = "hoStudy_corr_eta1.0.root";
+   string hostudy_eta01 = "root_files/hoStudy_corr_eta0.1.root";
+   string hostudy_eta05 = "root_files/hoStudy_corr_eta0.5.root";
+   string hostudy_eta10 = "root_files/hoStudy_corr_eta1.0.root";
    //********************************************
    // make plots
    //********************************************
-   fitPlot(hostudy_eta01,0,"p_{T}=50 GeV/c, #eta=0.1","fit_corr_eta0.1_pT50","eps");
-   fitPlot(hostudy_eta01,1,"p_{T}=100 GeV/c, #eta=0.1","fit_corr_eta0.1_pT100","eps");
-   fitPlot(hostudy_eta01,2,"p_{T}=300 GeV/c, #eta=0.1","fit_corr_eta0.1_pT300","eps");
-   fitPlot(hostudy_eta01,3,"p_{T}=500 GeV/c, #eta=0.1","fit_corr_eta0.1_pT500","eps");
-   fitPlot(hostudy_eta01,4,"p_{T}=1000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT1000","eps");
-   fitPlot(hostudy_eta01,5,"p_{T}=2000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT2000","eps");
-   fitPlot(hostudy_eta01,6,"p_{T}=4000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT4000","eps");
-   fitPlot(hostudy_eta01,7,"p_{T}=7000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT7000","eps");
+//    fitPlot(hostudy_eta01,0,"p_{T}=50 GeV/c, #eta=0.1","fit_corr_eta0.1_pT50","eps");
+//    fitPlot(hostudy_eta01,1,"p_{T}=100 GeV/c, #eta=0.1","fit_corr_eta0.1_pT100","eps");
+//    fitPlot(hostudy_eta01,2,"p_{T}=300 GeV/c, #eta=0.1","fit_corr_eta0.1_pT300","eps");
+//    fitPlot(hostudy_eta01,3,"p_{T}=500 GeV/c, #eta=0.1","fit_corr_eta0.1_pT500","eps");
+//    fitPlot(hostudy_eta01,4,"p_{T}=1000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT1000","eps");
+//    fitPlot(hostudy_eta01,5,"p_{T}=2000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT2000","eps");
+//    fitPlot(hostudy_eta01,6,"p_{T}=4000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT4000","eps");
+//    fitPlot(hostudy_eta01,7,"p_{T}=7000 GeV/c, #eta=0.1","fit_corr_eta0.1_pT7000","eps");
+//    
+//    fitPlot(hostudy_eta05,0,"p_{T}=50 GeV/c, #eta=0.5","fit_corr_eta0.5_pT50","eps");
+//    fitPlot(hostudy_eta05,1,"p_{T}=100 GeV/c, #eta=0.5","fit_corr_eta0.5_pT100","eps");
+//    fitPlot(hostudy_eta05,2,"p_{T}=300 GeV/c, #eta=0.5","fit_corr_eta0.5_pT300","eps");
+//    fitPlot(hostudy_eta05,3,"p_{T}=500 GeV/c, #eta=0.5","fit_corr_eta0.5_pT500","eps");
+//    fitPlot(hostudy_eta05,4,"p_{T}=1000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT1000","eps");
+//    fitPlot(hostudy_eta05,5,"p_{T}=2000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT2000","eps");
+//    fitPlot(hostudy_eta05,6,"p_{T}=4000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT4000","eps");
+//    fitPlot(hostudy_eta05,7,"p_{T}=7000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT7000","eps");
+//    
+//    fitPlot(hostudy_eta10,0,"p_{T}=50 GeV/c, #eta=1.0","fit_corr_eta1.0_pT50","eps");
+//    fitPlot(hostudy_eta10,1,"p_{T}=100 GeV/c, #eta=1.0","fit_corr_eta1.0_pT100","eps");
+//    fitPlot(hostudy_eta10,2,"p_{T}=300 GeV/c, #eta=1.0","fit_corr_eta1.0_pT300","eps");
+//    fitPlot(hostudy_eta10,3,"p_{T}=500 GeV/c, #eta=1.0","fit_corr_eta1.0_pT500","eps");
+//    fitPlot(hostudy_eta10,4,"p_{T}=1000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT1000","eps");
+//    fitPlot(hostudy_eta10,5,"p_{T}=2000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT2000","eps");
+//    fitPlot(hostudy_eta10,6,"p_{T}=4000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT4000","eps");
+//    fitPlot(hostudy_eta10,7,"p_{T}=7000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT7000","eps");
    
-   fitPlot(hostudy_eta05,0,"p_{T}=50 GeV/c, #eta=0.5","fit_corr_eta0.5_pT50","eps");
-   fitPlot(hostudy_eta05,1,"p_{T}=100 GeV/c, #eta=0.5","fit_corr_eta0.5_pT100","eps");
-   fitPlot(hostudy_eta05,2,"p_{T}=300 GeV/c, #eta=0.5","fit_corr_eta0.5_pT300","eps");
-   fitPlot(hostudy_eta05,3,"p_{T}=500 GeV/c, #eta=0.5","fit_corr_eta0.5_pT500","eps");
-   fitPlot(hostudy_eta05,4,"p_{T}=1000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT1000","eps");
-   fitPlot(hostudy_eta05,5,"p_{T}=2000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT2000","eps");
-   fitPlot(hostudy_eta05,6,"p_{T}=4000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT4000","eps");
-   fitPlot(hostudy_eta05,7,"p_{T}=7000 GeV/c, #eta=0.5","fit_corr_eta0.5_pT7000","eps");
-   
-   fitPlot(hostudy_eta10,0,"p_{T}=50 GeV/c, #eta=1.0","fit_corr_eta1.0_pT50","eps");
-   fitPlot(hostudy_eta10,1,"p_{T}=100 GeV/c, #eta=1.0","fit_corr_eta1.0_pT100","eps");
-   fitPlot(hostudy_eta10,2,"p_{T}=300 GeV/c, #eta=1.0","fit_corr_eta1.0_pT300","eps");
-   fitPlot(hostudy_eta10,3,"p_{T}=500 GeV/c, #eta=1.0","fit_corr_eta1.0_pT500","eps");
-   fitPlot(hostudy_eta10,4,"p_{T}=1000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT1000","eps");
-   fitPlot(hostudy_eta10,5,"p_{T}=2000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT2000","eps");
-   fitPlot(hostudy_eta10,6,"p_{T}=4000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT4000","eps");
-   fitPlot(hostudy_eta10,7,"p_{T}=7000 GeV/c, #eta=1.0","fit_corr_eta1.0_pT7000","eps");
-   
-//    resolutionPlot(hostudy_eta01,"#eta=0.1","corr_eta0.1","eps");
-//    resolutionPlot(hostudy_eta05,"#eta=0.5","corr_eta0.5","eps");
-//    resolutionPlot(hostudy_eta10,"#eta=1.0","corr_eta1.0","eps");
+   resolutionPlot(hostudy_eta01,"#eta=0.1","corr_eta0.1","eps");
+   resolutionPlot(hostudy_eta05,"#eta=0.5","corr_eta0.5","eps");
+   resolutionPlot(hostudy_eta10,"#eta=1.0","corr_eta1.0","eps");
 }
