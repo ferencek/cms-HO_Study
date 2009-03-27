@@ -181,18 +181,33 @@
 
 % CMS NOTE header \cmsnote
 \def\cmsnote#1{{Available on CMS information server
-\hfill\Large\bf CMS NOTE #1} 
+\hfill\Large\bf CMS NOTE-#1} 
 \begin{center}\includegraphics{cms_note.eps}\end{center}\vspace*{0mm}}
 
 % CMS INTERNAL NOTE header \internalnote
 \def\internalnote#1{{Available on CMS information server
-\hfill\Large\bf CMS IN #1} 
+\hfill\Large\bf CMS IN-#1} 
 \begin{center}\includegraphics{cms_in.eps}\end{center}}
 
 % CMS CONFERENCE REPORT header \conferencereport
 \def\conferencereport#1{{Available on CMS information server
-\hfill\Large\bf CMS CR #1} 
+\hfill\Large\bf CMS CR-#1} 
 \begin{center}\includegraphics{cms_cr.eps}\end{center}}
+
+% CMS ANALYSIS NOTE header \cmsan
+\def\cmsan#1{{Available on CMS information server
+\hfill\Large\bf CMS AN-#1} 
+\begin{center}\includegraphics{cms_an.eps}\end{center}\vspace*{0mm}}
+
+% CMS DETECTOR NOTE header \cmsdtnote
+\def\cmsdtnote#1{{Available on CMS information server
+\hfill\Large\bf CMS DN-#1} 
+\begin{center}\includegraphics{cms_dt.eps}\end{center}\vspace*{0mm}}
+
+% CMS PHYSICS ANALYSIS SUMMARY header \cmspas
+\def\cmspas#1{{Available on CMS information server
+\hfill\Large\bf CMS PAS #1} 
+\begin{center}\includegraphics{cms_pas.eps}\end{center}\vspace*{0mm}}
 
 % Date (flushright)
 \def\date#1{{\large\bf\hfill #1}}

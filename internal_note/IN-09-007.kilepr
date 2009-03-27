@@ -1,0 +1,34 @@
+[General]
+img_extIsRegExp=false
+img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
+kileprversion=2
+kileversion=2.0
+lastDocument=IN-09-007.tex
+masterDocument=
+name=IN-09-007
+pkg_extIsRegExp=false
+pkg_extensions=.cls .sty
+src_extIsRegExp=false
+src_extensions=.tex .ltx .latex .dtx .ins
+
+[Tools]
+MakeIndex=
+QuickBuild=
+
+[item:IN-09-007.kilepr]
+archive=true
+column=7143536
+encoding=
+highlight=
+line=0
+open=false
+order=-1
+
+[item:IN-09-007.tex]
+archive=true
+column=2
+encoding=UTF-8
+highlight=LaTeX
+line=21
+open=true
+order=0
