@@ -34,6 +34,7 @@
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/JetReco/interface/CaloJet.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
+#include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/Candidate/interface/CandMatchMap.h"
@@ -92,6 +93,7 @@ class HOStudy : public edm::EDAnalyzer {
       Handle<CandidateCollection>  selectedGenJets;
       Handle<CaloJetCollection>  caloJetsWithHO;
       Handle<CaloJetCollection>  caloJets;
+      Handle<HORecHitCollection> hoRecHits;
       
       TH1F *h_GenJetEta;
       TH1F *h_GenJetPhi;
@@ -168,7 +170,7 @@ HOStudy::beginJob(const edm::EventSetup&)
    h_ETRatioWithHO_ET = fs->make<TH2F>("h_ETRatioWithHO_ET",";E^{gen}_{T} [GeV];E^{calo,HO}_{T}/E^{gen}_{T}",7200,0.,7200.,150,0.,1.5);
    h_GenJetDeltaE     = fs->make<TH1F>("h_GenJetDeltaE","#DeltaE=E^{gen}-E^{gen};#DeltaE [GeV];Entries/(0.1 GeV)",200,-10.,10.);
    h_ConstituentpT_ET = fs->make<TH2F>("h_ConstituentpT_ET",";E^{gen}_{T} [GeV];p_{T} [GeV/c]",7200,0.,7200.,2000,0.,2000.);
-   n_Ntuple = fs->make<TNtuple>("n_Ntuple","HO Study Ntuple", "GenJetE:GenJetEta:GenJetPhi:CaloJetE:CaloJetEta:CaloJetPhi:CaloJetWithHOE:CaloJetWithHOEta:CaloJetWithHOPhi:HadEnergyInHB:HadEnergyInHO");
+   n_Ntuple = fs->make<TNtuple>("n_Ntuple","HO Study Ntuple", "GenJetE:GenJetEta:GenJetPhi:CaloJetE:CaloJetEta:CaloJetPhi:CaloJetWithHOE:CaloJetWithHOEta:CaloJetWithHOPhi:HadEnergyInHB:HadEnergyInHO:MaxEnergyInHOChannel");
 }
 
 // ------------ method called to for each event  ------------
@@ -182,6 +184,7 @@ HOStudy::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       iEvent.getByLabel (selectedGenJets_, selectedGenJets);
       iEvent.getByLabel (caloJetsWithHO_, caloJetsWithHO);
       iEvent.getByLabel (caloJets_, caloJets);
+      iEvent.getByLabel("horeco", hoRecHits );
    } catch(std::exception& ce) {
       cerr << "[HOStudy] caught std::exception " << ce.what() << endl;
       return;
@@ -219,60 +222,59 @@ HOStudy::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       double dRWithHO = -1.;
       double hadEnergyInHB = 0;
       double hadEnergyInHO = 0;
+      double maxEnergyInHOChannel = 0;
       for( CandViewMatchMap::const_iterator i  = matchedJetsMap->begin();
-					    i != matchedJetsMap->end();
-					    i++ ) {
-	  const Candidate *sourceRef = &*(i->key);
-	  const Candidate *matchRef  = &*(i->val);
-	  genJetE =  sourceRef->energy();
-	  genJetEta =  sourceRef->eta();
-	  genJetPhi =  sourceRef->phi();
-	  caloJetE =  matchRef->energy();
-	  caloJetEta =  matchRef->eta();
-	  caloJetPhi =  matchRef->phi();
-	  dR = DeltaR( sourceRef->p4() , matchRef->p4() );
-	  h_GenJetEta->Fill( genJetEta );
-	  h_GenJetPhi->Fill( genJetPhi );
-	  h_CaloJetEta->Fill( caloJetEta );
-	  h_CaloJetPhi->Fill( caloJetPhi );
-	  h_DeltaR->Fill( dR );
-	  h_ETRatio_ET->Fill( sourceRef->et(), matchRef->et()/sourceRef->et() );
-// 	  for( CaloJetCollection::const_iterator j  = caloJets->begin();
-// 						 j != caloJets->end();
-// 						 j++ ) {
-// 	      if ( DeltaR( matchRef->p4(), j->p4() ) < 0.001 ) {
-//                  cout<<">> hadEnergyInHO for CaloJet without HO = "<<j->hadEnergyInHO()<<" GeV"<<endl;
-//               }
-// 	  }
+                                            i != matchedJetsMap->end();
+                                            i++ ) {
+          const Candidate *sourceRef = &*(i->key);
+          const Candidate *matchRef  = &*(i->val);
+          genJetE =  sourceRef->energy();
+          genJetEta =  sourceRef->eta();
+          genJetPhi =  sourceRef->phi();
+          caloJetE =  matchRef->energy();
+          caloJetEta =  matchRef->eta();
+          caloJetPhi =  matchRef->phi();
+          dR = DeltaR( sourceRef->p4() , matchRef->p4() );
+          h_GenJetEta->Fill( genJetEta );
+          h_GenJetPhi->Fill( genJetPhi );
+          h_CaloJetEta->Fill( caloJetEta );
+          h_CaloJetPhi->Fill( caloJetPhi );
+          h_DeltaR->Fill( dR );
+          h_ETRatio_ET->Fill( sourceRef->et(), matchRef->et()/sourceRef->et() );
       }
       // loop over matchedJetsWithHOMap
       for( CandViewMatchMap::const_iterator i  = matchedJetsWithHOMap->begin();
-					    i != matchedJetsWithHOMap->end();
-					    i++ ) {
-	  const Candidate *sourceRef = &*(i->key);
-	  const Candidate *matchRef  = &*(i->val);
-	  caloJetWithHOE =  matchRef->energy();
+                                            i != matchedJetsWithHOMap->end();
+                                            i++ ) {
+          const Candidate *sourceRef = &*(i->key);
+          const Candidate *matchRef  = &*(i->val);
+          caloJetWithHOE =  matchRef->energy();
           caloJetWithHOEta =  matchRef->eta();
           caloJetWithHOPhi =  matchRef->phi();
-	  dRWithHO = DeltaR( sourceRef->p4(), matchRef->p4() );
-	  h_CaloJetWithHOEta->Fill( caloJetWithHOEta );
-	  h_CaloJetWithHOPhi->Fill( caloJetWithHOPhi );
-	  h_DeltaRWithHO->Fill( dRWithHO );
-	  h_ETRatioWithHO_ET->Fill( sourceRef->et(), matchRef->et()/sourceRef->et() );
-	  for( CaloJetCollection::const_iterator j  = caloJetsWithHO->begin();
-						 j != caloJetsWithHO->end();
-						 j++ ) {
-	      if ( DeltaR( matchRef->p4(), j->p4() ) < 0.001 ) {
-	         hadEnergyInHB = j->hadEnergyInHB();
+          dRWithHO = DeltaR( sourceRef->p4(), matchRef->p4() );
+          h_CaloJetWithHOEta->Fill( caloJetWithHOEta );
+          h_CaloJetWithHOPhi->Fill( caloJetWithHOPhi );
+          h_DeltaRWithHO->Fill( dRWithHO );
+          h_ETRatioWithHO_ET->Fill( sourceRef->et(), matchRef->et()/sourceRef->et() );
+          for( CaloJetCollection::const_iterator j  = caloJetsWithHO->begin();
+                                                 j != caloJetsWithHO->end();
+                                                 j++ ) {
+              if ( DeltaR( matchRef->p4(), j->p4() ) < 0.001 ) {
+                 hadEnergyInHB = j->hadEnergyInHB();
                  hadEnergyInHO = j->hadEnergyInHO();
-		 h_DeltaE->Fill( caloJetWithHOE - j->energy() );
-		 h_DeltaEHO->Fill( (caloJetWithHOE - caloJetE) - hadEnergyInHO );
-		 h_DeltaE_EHO->Fill( hadEnergyInHO, (caloJetWithHOE - caloJetE) );
-                 //cout<<">> hadEnergyInHO for CaloJet with HO = "<<j->hadEnergyInHO()<<" GeV"<<endl;
-	      } 
-	  }
+                 h_DeltaE->Fill( caloJetWithHOE - j->energy() );
+                 h_DeltaEHO->Fill( (caloJetWithHOE - caloJetE) - hadEnergyInHO );
+                 h_DeltaE_EHO->Fill( hadEnergyInHO, (caloJetWithHOE - caloJetE) );
+                 std::vector<CaloTowerPtr> caloJetConstituents = j->getCaloConstituents();
+                 std::vector<CaloTowerPtr>::const_iterator c;
+                 // loop over constituent CaloTowers
+                 for ( c = caloJetConstituents.begin(); c != caloJetConstituents.end(); c++ ) {
+                    if( (*c)->outerEnergy() > maxEnergyInHOChannel ) maxEnergyInHOChannel = (*c)->outerEnergy();
+                 }
+              } 
+           }
       }
-      n_Ntuple->Fill(genJetE,genJetEta,genJetPhi,caloJetE,caloJetEta,caloJetPhi,caloJetWithHOE,caloJetWithHOEta,caloJetWithHOPhi,hadEnergyInHB,hadEnergyInHO);
+      n_Ntuple->Fill(genJetE,genJetEta,genJetPhi,caloJetE,caloJetEta,caloJetPhi,caloJetWithHOE,caloJetWithHOEta,caloJetWithHOPhi,hadEnergyInHB,hadEnergyInHO,maxEnergyInHOChannel);
    }
 
 }
