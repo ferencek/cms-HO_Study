@@ -1,0 +1,9 @@
+universe = vanilla
+Executable = ../MultipleJobs.sh
+should_transfer_files = NO
+notify_user = ferencek@umd.edu
+Output = PREFIX_NAME_$(cluster)_$(process).stdout
+Error  = PREFIX_NAME_$(cluster)_$(process).stderr
+Log    = PREFIX_NAME_$(cluster)_$(process).condor
+Arguments = $(cluster) $(process) RUN_DIR PREFIX_NAME MAXEVENTS
+Queue QUEUE
